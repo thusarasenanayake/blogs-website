@@ -40,6 +40,11 @@ h1, h2, h3, h4, h5, h6 {
 .no-underline:hover{
   color: rgb(223, 23, 23);
 }
+#index_author{
+  z-index:2 !important;
+  position: relative;
+  
+}
 
 @media (min-width: 768px) {
   .display-4 {

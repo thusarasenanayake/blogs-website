@@ -20,7 +20,8 @@ const renderPosts = async (term) => {
     const categoryColor = {
         World: 'primary',
         Health: 'danger',
-        Politics: "success"
+        Politics: "success",
+        Other: 'warning',
     }
 
     posts.forEach(post => {
@@ -38,7 +39,7 @@ const renderPosts = async (term) => {
                 <div class="col p-4 d-flex flex-column position-static">
                     <strong class="d-inline-block mb-2 text-${categoryColor[post.category]}">${post.category}</strong>
                     <h3 class="mb-0">${post.title}</h3>
-                    <div class="mb-1 text-muted mb-2"><small>${dayjs(post.date).format('MMMM D, YYYY')} by <a href="#">${post.author}</a></small></div>
+                    <div class="mb-1 text-muted mb-2"><small>${dayjs(post.date).format('MMMM D, YYYY')} by <a href="#" id="index_author">${post.author}</a></small></div>
                     <p class="card-text mb-auto">
                       ${post.summary.length < 200 ? post.summary : (post.summary).slice(0, 130) + " ..."}
                     </p>
