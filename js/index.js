@@ -2,15 +2,15 @@ const blogCards = document.querySelector('#blog_cards')
 const coverPostHeading = document.querySelector('#cover-post-heading')
 const coverPostSummary = document.querySelector('#cover-post-summary')
 const coverPostLink = document.querySelector('#cover-post-link')
-
+const searchForm = document.querySelector('#search_form')
 
 // rendering posts
 
-const renderPosts = async (term) => {
+const renderPosts = async (searchTerm) => {
     let uri = 'http://localhost:3000/posts?_sort=id&_order=desc';
 
-    if (term) {
-        uri += `&q=${term}`
+    if (searchTerm) {
+        uri += `&q=${searchTerm}`
     }
     const res = await fetch(uri);
     const posts = await res.json();
@@ -25,7 +25,7 @@ const renderPosts = async (term) => {
     }
 
     posts.forEach(post => {
-        // layouting cover post
+        // layouting the cover post
         if (posts[0] === post) {
             coverPostHeading.innerHTML = post.title;
             coverPostSummary.innerHTML = post.summary;
@@ -55,7 +55,15 @@ const renderPosts = async (term) => {
 
 }
 
-// calling rendering
+// searching posts
+const searchPosts = async (e) =>{
+    e.preventDefault();
+    let searchTerm = searchForm.search_box.value.trim();
+    renderPosts(searchTerm)
+} 
+
+
 window.addEventListener('DOMContentLoaded', () => {
     renderPosts();
 })
+searchForm.addEventListener('submit',searchPosts)
