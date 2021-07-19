@@ -3,15 +3,40 @@ const coverPostHeading = document.querySelector('#cover-post-heading')
 const coverPostSummary = document.querySelector('#cover-post-summary')
 const coverPostLink = document.querySelector('#cover-post-link')
 const searchForm = document.querySelector('#search_form')
+const category = document.querySelector('#category')
 
 // rendering posts
 
-const renderPosts = async (searchTerm) => {
-    let uri = 'http://localhost:3000/posts?_sort=id&_order=desc';
+const renderPosts = async (terms) => {
 
-    if (searchTerm) {
-        uri += `&q=${searchTerm}`
+    let uri = 'http://localhost:3000/posts';
+
+    switch (terms[0]) {
+
+        // rendering search
+        case "search":
+            uri += `?_sort=id&_order=desc&q=${terms[1]}`;
+            break;
+
+        // rendering filter 
+        case "filter":
+            // if filtered by category ( terms => ['filter', 'category', 'world'])
+            if (terms[1] === 'category') {
+                let capitalizedTerm;
+                if (terms[2] === 'u.s.')
+                    capitalizedTerm = 'U.S.'
+                else {
+                    capitalizedTerm = terms[2].charAt(0).toUpperCase() + terms[2].slice(1)
+                }
+                uri += `?${terms[1]}=${capitalizedTerm}&_order=desc`;
+            }
+            break;
+
+        // rendering default
+        default:
+            uri += '?_sort=id&_order=desc';
     }
+
     const res = await fetch(uri);
     const posts = await res.json();
 
@@ -19,9 +44,10 @@ const renderPosts = async (searchTerm) => {
 
     const categoryColor = {
         World: 'primary',
-        Health: 'danger',
-        Politics: "success",
+        Design: 'danger',
+        Technology: "success",
         Other: 'warning',
+        'U.S.': 'secondary',
     }
 
     posts.forEach(post => {
@@ -56,14 +82,23 @@ const renderPosts = async (searchTerm) => {
 }
 
 // searching posts
-const searchPosts = async (e) =>{
+const searchPosts = async (e) => {
     e.preventDefault();
     let searchTerm = searchForm.search_box.value.trim();
-    renderPosts(searchTerm)
-} 
+    renderPosts(['search', searchTerm])
+}
 
+// filtering posts
+const filterPost = async (e, criteria) => {
+    targetId = e.target.id;
+    renderPosts(['filter', criteria, targetId])
+}
 
-window.addEventListener('DOMContentLoaded', () => {
-    renderPosts();
+// event listeners
+window.addEventListener('DOMContentLoaded', renderPosts);
+
+searchForm.addEventListener('submit', searchPosts)
+
+category.addEventListener('click', (e) => {
+    filterPost(e, 'category')
 })
-searchForm.addEventListener('submit',searchPosts)
