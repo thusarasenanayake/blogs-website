@@ -9,7 +9,8 @@ const category = document.querySelector('#category')
 
 const renderPosts = async (terms) => {
 
-    let uri = 'http://localhost:3000/posts';
+    // let uri = 'http://localhost:3000/posts';
+    let uri = 'https://thusara-fake-json-server.herokuapp.com/posts';
 
     switch (terms[0]) {
 

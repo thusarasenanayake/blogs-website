@@ -1,7 +1,8 @@
 const blogPost = document.querySelector('#blog-post');
 const id = new URLSearchParams(window.location.search).get('id')
 const deletePostBtn = document.querySelector('#delete-post-btn')
-const uri = `http://localhost:3000/posts/${id}`
+//const uri = `http://localhost:3000/posts/${id}`
+const uri = `https://thusara-fake-json-server.herokuapp.com/posts/${id}`
 
 // rendering a post
 const renderPost = async () => {
